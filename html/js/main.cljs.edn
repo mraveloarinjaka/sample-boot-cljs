@@ -1,0 +1,2 @@
+{:require [my-namespace.core]
+ :compiler-options {:asset-path "js/main.out"}}
