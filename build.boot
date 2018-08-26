@@ -10,7 +10,8 @@
                  [com.cemerick/piggieback    "0.2.2"  :scope  "test"] ;; needed by boot-cljs-repl
                  [weasel                     "0.7.0"  :scope  "test"] ;; needed by boot-cljs-repl
                  [org.clojure/tools.nrepl    "0.2.12" :scope  "test"] ;; needed by boot-cljs-repl
-                 [pandeiro/boot-http         "0.8.3"                ]])
+                 [pandeiro/boot-http         "0.8.3"                ]
+                 ])
 
 (require '[adzerk.boot-cljs :refer [cljs]]
          '[adzerk.boot-cljs-repl :refer [cljs-repl start-repl]]
@@ -19,12 +20,21 @@
 
 (def OUTPUT-DIR "target")
 
+(deftask cljs-devtools
+  "setup clojurescript dev tools"
+  []
+  (merge-env! :dependencies '[[binaryage/devtools "0.9.10" :scope "test"]])
+  (task-options! cljs #(update-in % [:compiler-options :preloads] conj 'devtools.preload))
+  identity)
+
+
 (deftask dev
   "Launch Immediate Feedback Development Environment"
   []
   (comp
     (watch)
     (speak)
+    (cljs-devtools)
     (reload) ;; always before cljs task
     (cljs-repl) ;; always before cljs task
     (cljs :optimizations :none)

@@ -12,6 +12,7 @@
 (set! (.-onload js/window) l/init)
 
 #_ (js/alert "42")
+#_ (js/console.log {:answer 42} #js{:answer 42})
 
 (comment
   (str (.-value (.getElementById js/document "email")))
